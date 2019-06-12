@@ -142,7 +142,7 @@
                     <div class="row" id="hasilFinansial">
                         <div class="col-sm-6">
                             <form action="">
-                            <div class="form-group row">
+                                <div class="form-group row">
                                     <label class="col-sm-12 col-md-3 col-form-label">Bahan Baku</label>
                                     <div class="col-sm-12 col-md-6">
                                         <input type="number" step="any" class="form-control" value="<?=@$_GET['bahanbaku']?$_GET['bahanbaku']:0?>" name="bahanbaku">
@@ -194,10 +194,22 @@
                     <div class="row" id="hasilPenetapan">
                         <div class="col-sm-4">
                             <form action="">
-                            <div class="form-group row">
+                                <div class="form-group row">
                                     <label class="col-sm-12 col-md-12 col-form-label">MARGIN KEUNTUNGAN AGROINDUSTRI (%)</label>
                                     <div class="col-sm-12 col-md-12">
                                         <input type="number" step="any" class="form-control" value="<?=@$_GET['MKA']?$_GET['MKA']:25?>" name="MKA">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-12 col-md-12 col-form-label">HARGA JUAL ATC</label>
+                                    <div class="col-sm-12 col-md-12">
+                                    <input type="number" step="any" class="form-control" value="<?=@$_GET['HJATC']?$_GET['HJATC']:80000?>" name="HJATC">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-12 col-md-12 col-form-label">Selisih</label>
+                                    <div class="col-sm-12 col-md-12">
+                                    <input type="number" step="any" class="form-control" value="<?=@$_GET['selisih']?$_GET['selisih']:5000?>" name="selisih">
                                     </div>
                                 </div>
                                 <button class="btn btn-primary">submit</button>
@@ -971,7 +983,8 @@
 
                     <!-- Penentuan Harga -->
                     <?php
-                    $HJATC = 0; //HARGA JUAL ATC // 80K sampe 100K dll
+                    $selisih =  @$_GET['selisih']?$_GET['selisih']:5000;
+                    $HJATC = @$_GET['HJATC']?$_GET['HJATC']:80000; //HARGA JUAL ATC // 80K sampe 100K dll
                     $JPATC = 0; // JUMLAH PRODUKSI ATC
                     $MKA = @$_GET['MKA']?$_GET['MKA']:25; //persen / MARGIN KEUNTUNGAN AGROINDUSTRI
                     $BPBB = 0; //rumput lau basah pertahun / BIAYA PEMBELIAN BAHAN BAKU
@@ -992,25 +1005,30 @@
                                         <th colspan="6">PENETAPAN HARGA</th>
                                     </tr>
                                     <tr>
-                                        <th>HJATC</th>
-                                        <th>JPATC</th>
-                                        <th>MKA</th>
-                                        <th>BPBB</th>
-                                        <th>JBBA</th>
-                                        <th>HBRLA</th>
+                                        <th data-toggle="tooltip" data-placement="top" title="HARGA JUAL ATC">HJATC</th>
+                                        <th data-toggle="tooltip" data-placement="top" title="JUMLAH PRODUKSI ATC">JPATC</th>
+                                        <th data-toggle="tooltip" data-placement="top" title="MARGIN KEUNTUNGAN AGROINDUSTRI">MKA</th>
+                                        <th data-toggle="tooltip" data-placement="top" title="BIAYA PEMBELIAN BAHAN BAKU">BPBB</th>
+                                        <th data-toggle="tooltip" data-placement="top" title="JUMLAH BAHAN BAKU AGROINDUSTRI">JBBA</th>
+                                        <th data-toggle="tooltip" data-placement="top" title="HARGA BELI RUMPUT LAUT DITINGKAT AGROINDUSTRI">HBRLA</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    for($i = 80; $i <= 130; $i +=5){
-                                        $HJATC = $i*1000;
+                                    
+                                    $awal = 3*$selisih;
+                                    $HJATC = $HJATC - $awal;
+                                    $i = 0;
+                                    while($i < 10){
+                                        
                                         if(@$dataBahanBaku[0]){
                                             $HBRLA = ((($HJATC * $JPATC)*(1-$MKA))-$BPBB)/$JBBA;
                                         }else{
                                             $HBRLA = 0;
                                         }
+                                        
                                     ?>
-                                    <tr>
+                                    <tr <?=$HJATC==$_GET['HJATC']?'style="background-color: #cccccc;"':''?> >
                                         <td><?=$HJATC?></td>
                                         <td><?=$JPATC?></td>
                                         <td><?=$MKA?></td>
@@ -1018,7 +1036,11 @@
                                         <td><?=$JBBA?></td>
                                         <td><?=number_format($HBRLA,2,",",".")?></td>
                                     </tr>
-                                    <?php } ?>
+                                    <?php 
+                                    $HJATC +=$selisih;
+                                    $i++;
+
+                                    } ?>
                                 </tbody>
                             </table>
                         </div>

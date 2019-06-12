@@ -40,7 +40,7 @@
 							</div>
                         </div>
                         <div class="form-group row">
-							<label class="col-sm-12 col-md-2 col-form-label">Produk (Harian)</label>
+							<label class="col-sm-12 col-md-2 col-form-label">Produk perhari</label>
 							<div class="col-sm-12 col-md-10">
 								<input class="form-control" type="number" placeholder="Masukkan Jumlah Produk Harian" name="produk">
 							</div>
