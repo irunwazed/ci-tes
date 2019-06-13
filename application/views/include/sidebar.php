@@ -34,7 +34,7 @@
 						</a>
 						<ul class="submenu">
 							<li><a href="<?=$baseUrl?>bahan/penyedia/kll">Kebutuhan Bahan Baku</a></li>
-							<li><a href="<?=$baseUrl?>bahan/penyedia/rop">Sistem Prediksi Bahan Baku</a></li>
+							<li><a href="<?=$baseUrl?>bahan/penyedia/rop">Sistem Persediaan Bahan Baku</a></li>
 							<li><a href="<?=$baseUrl?>mpe/2">Sistem Pengadaan Bahan Baku</a></li>
 						</ul>
 					</li>
@@ -47,7 +47,7 @@
 					<!-- 4 -->
 					<li>
 						<a href="<?=$baseUrl?>prediksi/finansial/penetapan" class="dropdown-toggle no-arrow">
-							<span class="fa fa-bullseye"></span><span class="mtext">Metode Penetapan Bahan Baku</span>
+							<span class="fa fa-bullseye"></span><span class="mtext">Metode Penetapan Harga Bahan Baku</span>
 						</a>
 					</li>
 					<!-- 5 -->
@@ -59,7 +59,7 @@
 					<!-- 6 -->
 					<li>
 						<a href="<?=$baseUrl?>mpe/4" class="dropdown-toggle no-arrow">
-							<span class="fa fa-bullseye"></span><span class="mtext">Dengan Limbah</span>
+							<span class="fa fa-bullseye"></span><span class="mtext">Metode Penanganan Air Limbah</span>
 						</a>
 					</li>
 					<!-- 7 -->
@@ -71,7 +71,7 @@
 					<!-- 8 -->
 					<li>
 						<a href="<?=$baseUrl?>prediksi/ahp" class="dropdown-toggle no-arrow">
-							<span class="fa fa-bullseye"></span><span class="mtext">Model Penegmbangan Agroindsutri</span>
+							<span class="fa fa-bullseye"></span><span class="mtext">Model Pengembangan Agroindsutri</span>
 						</a>
 					</li>
 					<!-- <li class="dropdown">

@@ -51,6 +51,9 @@
                         }
                         
                     }
+
+                    //rank bobot
+                    $dataBobot = $this->mpe->rankBobot($kriteriaBobot);
     
                     // mengisi data semua responden
                     $index = 0;
@@ -110,7 +113,7 @@
 				<div class="pd-20 bg-white border-radius-4 box-shadow mb-30">
 					<div class="clearfix">
 						<div class="pull-left">
-							<h4 class="text-blue"><?=$namaMenu?> Forms</h4>
+							<h4 class="text-blue"><?=@$namaMenu?> Forms</h4>
 							<p class="mb-30 font-14">Masukkan Nilai Kriteria pada Setiap Alternatif</p>
 						</div>
                         <div class="pull-right">
@@ -205,9 +208,11 @@
 							<p class="mb-30 font-14">Hasil Metode MPE pada <?=$name?></p>
 						</div>
                         <div class="pull-right">
-                            <a href="<?=$baseUrl."prediksi/mpe"?>" class="btn btn-primary btn-sm scroll-click" ><i class="fa fi-arrow-left"></i> Kembali</a>
+                            <a href="<?=$baseUrl."mpe/".$menu?>" class="btn btn-primary btn-sm scroll-click" ><i class="fa fi-arrow-left"></i> Kembali</a>
 						</div>
-					</div>
+                    </div>
+                    <?php if($jumlahRespon > 0){ ?>
+                    
                     <form action="<?=base_url()?>prediksi/mpe/<?=@$id?>/save">
                         <div class="form-group row">
                             <label class="col-sm-4 col-md-2 col-form-label">Output</label>
@@ -225,6 +230,9 @@
                             </div>
                         </div>
                     </form>
+
+                    <?php } ?>
+                    
                     
                     <div id="tampilHasilRekap"></div>
                     <div id="tampilGrafikHasilRekap"></div>
@@ -235,8 +243,11 @@
                     </div>
                     <div class="clearfix">
                         <div class="pull-right">
-                        <a href="#" class="btn btn-info btn-sm scroll-click" data-table="penjelasan" onclick="viewTable(this)"><i class="fa fi-arrow-down"></i> Lihat Penjelasan</a>
-						</div>
+                            <a href="?tombol=tambah" class="btn btn-primary btn-sm scroll-click" ><i class="fa fa-plus-circle"></i> Tambah Responden</a>
+                            <?php if($jumlahRespon > 0){ ?>
+                            <a href="#" class="btn btn-info btn-sm scroll-click" data-table="penjelasan" onclick="viewTable(this)"><i class="fa fi-arrow-down"></i> Lihat Penjelasan</a>
+                            <?php } ?>
+                        </div>
 					</div>
                 </div>
 
@@ -270,6 +281,7 @@
                                     <th scope="col" colspan="<?=$jumlahRespon?>">Respon</th>
                                     <th scope="col" rowspan="2">Jumlah</th>
                                     <th scope="col" rowspan="2">Bobot</th>
+                                    <th scope="col" rowspan="2">Prioritas</th>
                                 </tr>
                                 <tr>
                                     <?php for($i =1; $i <= $jumlahRespon; $i++){ ?>
@@ -287,7 +299,9 @@
                                         <td scope="row"><div><?=$kriteriaRespon[$no][$i]?></div></td>
                                     <?php } ?>
                                     <td scope="row"><?=array_sum($kriteriaRespon[$no])?></td>
-                                    <td scope="row"><?=number_format($kriteriaBobot[$no],4,",",".")?></td>
+                                    <!-- <td scope="row"><?=number_format($kriteriaBobot[$no],4,",",".")?></td> -->
+                                    <td scope="row"><?=number_format($dataBobot[$no]['nilai'],4,",",".")?></td>
+                                    <td scope="row"><?=$dataBobot[$no]['no']+1?></td>
                                 </tr>
                                 <?php $no++; } ?>
                             </tbody>
@@ -306,6 +320,7 @@
                                             <th scope="col" rowspan="2">No</th>
                                             <th scope="col" rowspan="2">Kriteria</th>
                                             <th scope="col" rowspan="2">Bobot</th>
+                                            <th scope="col" rowspan="2">Prioritas</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -313,7 +328,9 @@
                                         <tr>
                                             <th scope="row"><?=$no+1?></th>
                                             <th scope="row"><?=$rowKriteria?></th>
-                                            <td scope="row"><?=number_format($kriteriaBobot[$no],4,",",".")?></td>
+                                            <!-- <td scope="row"><?=number_format($kriteriaBobot[$no],4,",",".")?></td> -->
+                                            <td scope="row"><?=number_format($dataBobot[$no]['nilai'],4,",",".")?></td>
+                                            <td scope="row"><?=$dataBobot[$no]['no']+1?></td>
                                         </tr>
                                         <?php $no++; } ?>
                                     </tbody>
@@ -339,7 +356,7 @@
                             </div>
                             <div class="col-sm-2 col-md-2">
                                 <a href="<?=$baseUrl."prediksi/mpe/".$id."?tombol=edit&id=".$row['respon_id']?>" class="btn btn-primary"><i class="fi-pencil"></i></a>
-                                <a href="<?=$baseUrl."prediksi/mpe/".$id."/hapus/".$row['respon_id']?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                <a href="#" data-pesan='Apakah anda yakin menghapus respon "<?=$row['respon_nama']?>"?' data-link="<?=$baseUrl."prediksi/mpe/".$id."/hapus/".$row['respon_id']?>" class="btn btn-danger" data-toggle="modal" data-target="#Medium-modal" onclick="setDelete(this)" ><i class="fa fa-trash"></i></a>
                             </div>
                         </div>
                         <table class="table table-bordered">

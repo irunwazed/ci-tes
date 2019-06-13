@@ -40,6 +40,7 @@
 					</div>
 					<form method="POST" action="<?=base_url()?>prediksi/bahan/penyedia/<?=$link?>">
                     <!-- <form method="POST" action=""> -->
+                        <input type="hidden" name="jenis" value="<?=@$jenis?>">
                         <input type="hidden" name="bahan_penyedia_id" value="<?=@$dataPilih[0]['bahan_penyedia_id']?>" />
                         <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Nama</label>
@@ -160,7 +161,7 @@
                                 <a href="<?=$baseUrl."bahan/penyedia/kll/".$bahan[$i]['bahan_penyedia_id']?>" class="btn btn-success"><i class="fi-magnifying-glass"></i></a>
                                 
                                 <a href="?tombol=edit&id=<?=$bahan[$i]['bahan_penyedia_id']?>" class="btn btn-primary"><i class="fi-pencil"></i></a>
-                                <a href="<?=$baseUrl."prediksi/bahan/penyedia/hapus/".$bahan[$i]['bahan_penyedia_id']?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                <a href="#" data-pesan='Apakah anda yakin menghapus data "<?=$bahan[$i]['bahan_penyedia_nama']?>"?' data-link="<?=$baseUrl."prediksi/bahan/penyedia/hapus/".$bahan[$i]['bahan_penyedia_id']?>" class="btn btn-danger" data-toggle="modal" data-target="#Medium-modal" onclick="setDelete(this)" ><i class="fa fa-trash"></i></a>
                             </td>
                             <?php }else if($jenis == "rop"){ ?>
                             <td><?=$EOQ?></td>
@@ -169,15 +170,14 @@
                                 <a href="<?=$baseUrl."bahan/penyedia/rop/".$bahan[$i]['bahan_penyedia_id']?>" class="btn btn-success"><i class="fi-magnifying-glass"></i></a>
                                 
                                 <a href="?tombol=edit&id=<?=$bahan[$i]['bahan_penyedia_id']?>" class="btn btn-primary"><i class="fi-pencil"></i></a>
-                                <a href="<?=$baseUrl."prediksi/bahan/penyedia/hapus/".$bahan[$i]['bahan_penyedia_id']?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                            </td>
+                                <a href="#" data-pesan='Apakah anda yakin menghapus data "<?=$bahan[$i]['bahan_penyedia_nama']?>"?' data-link="<?=$baseUrl."prediksi/bahan/penyedia/hapus/".$bahan[$i]['bahan_penyedia_id']?>" class="btn btn-danger" data-toggle="modal" data-target="#Medium-modal" onclick="setDelete(this)" ><i class="fa fa-trash"></i></a>
                             <?php }else{ ?>
                             <td><?=$KBB?></td>
                             <td><?=$KLL?></td>
                             <td>
                                 <a href="<?=$baseUrl."prediksi/bahan/penyedia/".$bahan[$i]['bahan_penyedia_id']?>" class="btn btn-success"><i class="fi-magnifying-glass"></i></a>
                                 <a href="?tombol=edit&id=<?=$bahan[$i]['bahan_penyedia_id']?>" class="btn btn-primary"><i class="fi-pencil"></i></a>
-                                <a href="<?=$baseUrl."prediksi/bahan/penyedia/hapus/".$bahan[$i]['bahan_penyedia_id']?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                <a href="#" data-pesan='Apakah anda yakin menghapus data "<?=$bahan[$i]['bahan_penyedia_nama']?>"?' data-link="<?=$baseUrl."prediksi/bahan/penyedia/hapus/".$bahan[$i]['bahan_penyedia_id']?>" class="btn btn-danger" data-toggle="modal" data-target="#Medium-modal" onclick="setDelete(this)" ><i class="fa fa-trash"></i></a>
                             </td>
                             <?php } ?>
                         </tr>

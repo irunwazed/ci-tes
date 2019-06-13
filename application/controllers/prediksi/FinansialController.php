@@ -34,12 +34,11 @@ class FinansialController extends CI_Controller {
         
         $data['data'] = $this->FinansialModel->selectAll();
 
-        // for($i =0; $i < count($data['data']); $i++){
-        //     $id = $data['data'][$i]['mpe_id'];
-        //     $data['data'][$i]['dataKriteria'] = $this->MpeModel->selectKriteria($id);
-        //     $data['data'][$i]['dataRespon'] = $this->MpeModel->selectRespon($id);
-        //     $data['data'][$i]['dataWilayah'] = $this->MpeModel->selectWilayah($id);
-        // }
+        if(@$_GET['tombol'] == 'edit'){
+            $data['dataPilih'] = $this->FinansialModel->selectOne(@$_GET['id']);
+            $data['dataPilih'] = @$data['dataPilih'][0];
+            
+        }
 
         $data['isi'] = $this->load->view('prediksi/finansial/table', $data, true);
         $this->admintemplate->templateAll($data);
@@ -48,6 +47,15 @@ class FinansialController extends CI_Controller {
     public function finansialInput(){
         $post = $this->input->post();
         $result = $this->FinansialModel->finansialInput($post);
+
+        $this->pesan($result, 'Berhasil Memasukkan Data', 'Gagal Memasukkan Data');
+
+        redirect(base_url('prediksi/finansial'),'refresh');
+    }
+
+    public function finansialUpdate(){
+        $post = $this->input->post();
+        $result = $this->FinansialModel->finansialUpdate($post);
 
         $this->pesan($result, 'Berhasil Memasukkan Data', 'Gagal Memasukkan Data');
 
@@ -109,6 +117,57 @@ class FinansialController extends CI_Controller {
         $this->admintemplate->templateAll($data);
     }
 
+    public function savePdf($id = null, $save = 1){
+        $config['baseTemplate'] = $this->baseTemplate;
+        $data['baseTemplate'] = $this->baseTemplate;
+
+        $config['baseUrl'] = $this->baseUrl;
+        $data['baseUrl'] = $this->baseUrl;
+
+        $data['head'] = $this->load->view('include/head', $config, true);
+        $data['header'] = $this->load->view('include/header', $config, true);
+        $data['sidebar'] = $this->load->view('include/sidebar', $config, true);
+        $data['footer'] = $this->load->view('include/footer', $config, true);
+        $data['script'] = $this->load->view('include/script', $config, true);
+        
+
+        $data['id'] = $id;
+        $data['status'] = @$_GET['status']; // penetapan
+        $data['dataFinansial'] = $this->FinansialModel->selectFinansial($id);
+        $data['dataBiaya'] = $this->FinansialModel->selectBiaya($id);
+        $data['dataPenerimaan'] = $this->FinansialModel->selectPenerimaan($id);
+        $data['dataBahanBaku'] = $this->FinansialModel->selectBahanBaku($id);
+        
+        $data['dataOperasional'] = $this->FinansialModel->selectOperasional($id);
+        // $data['dataKriteria'] = $this->MpeModel->selectKriteria($id);
+        // $data['dataRespon'] = $this->MpeModel->selectRespon($id);
+        // $data['dataWilayah'] = $this->MpeModel->selectWilayah($id);
+        // $data['dataKriteriaRespon'] = $this->MpeModel->selectKriteriaRespon($id);
+        // $data['dataWilayahKriteria'] = $this->MpeModel->selectWilayahKriteria($id);
+        
+        $post = $this->input->post();
+
+        if(@$this->input->get('tombol')){
+            $data['dataKategori'] = $this->FinansialModel->selectBahanKategori();
+            $data['dataSatuan'] = $this->FinansialModel->selectAllSatuan();
+            if(@$this->input->get('id') && @$this->input->get('tombol') == 'edit'){
+                $data['dataPilih'] = $this->FinansialModel->selectOneBarang($this->input->get('id'));
+                $config['dataPilih'] = $data['dataPilih'];
+            }
+            // $data['dataOneKriteriaRespon'] = $this->MpeModel->selectOneKriteriaRespon($this->input->get('id'));
+            // $data['dataOneWilayahKriteria'] = $this->MpeModel->selectOneWilayahKriteria($this->input->get('id'));
+        }
+        $data['myscript'] = $this->load->view('prediksi/finansial-perhitungan/script', $config, true);
+        $this->load->library('M_pdf');
+        if($save){
+            $this->m_pdf->getPdf('Finansial', 'pdf/finansial', $data, 'miring');
+        }else{
+            $this->load->view('pdf/finansial', $data);
+        }
+        
+
+    }
+
     // penetapan
 
     public function daftarPenetapan($page = 1){
@@ -132,7 +191,11 @@ class FinansialController extends CI_Controller {
         
         $data['data'] = $this->FinansialModel->selectAll();
 
-        
+        if(@$_GET['tombol'] == 'edit'){
+            $data['dataPilih'] = $this->FinansialModel->selectOne(@$_GET['id']);
+            $data['dataPilih'] = @$data['dataPilih'][0];
+            
+        }
 
         $data['isi'] = $this->load->view('prediksi/finansial/table', $data, true);
         $this->admintemplate->templateAll($data);

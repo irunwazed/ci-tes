@@ -139,9 +139,18 @@
                         <a href="<?=$baseUrl."prediksi/finansial/".(@$status?$status.'/':'')?>" class="btn btn-primary btn-sm scroll-click" ><i class="fi-arrow-left"></i> Kembali</a>
 						</div>
                     </div>
+                    <a href="<?=base_url()."prediksi/finansial/".@$id."/save"?>?status=<?=@$status=="penetapan"?"penetapan":""?>" class="btn btn-warning">PDF</a>
                     <div class="row" id="hasilFinansial">
+                        
+                        <div class="col-sm-6" id="tampilHasil">
+                        </div>
                         <div class="col-sm-6">
-                            <form action="">
+                            <?php if($jumlahFinansial > 0){ ?>
+                            <div>
+                                <button class="btn btn-info btn-sm scroll-click" onclick="skenario1(true)" id="tombol-skenario-1">buat skenario</button>
+                            </div>
+                            <?php } ?>
+                            <form action="" id="form-skenario-1">
                                 <div class="form-group row">
                                     <label class="col-sm-12 col-md-3 col-form-label">Bahan Baku</label>
                                     <div class="col-sm-12 col-md-6">
@@ -186,14 +195,20 @@
                                 <button class="btn btn-primary">submit</button>
                             </form>
                         </div>
-                        <div class="col-sm-6" id="tampilHasil">
-                        </div>
                         <br>
                         <hr>
                     </div>
                     <div class="row" id="hasilPenetapan">
+                        
+                        <div class="col-sm-8" id="tampilPenetapan">
+                        </div>
                         <div class="col-sm-4">
-                            <form action="">
+                            <?php if($jumlahFinansial > 0){ ?>
+                            <div>
+                                <button class="btn btn-info btn-sm scroll-click" onclick="skenario(true)" id="tombol-skenario">buat skenario</button>
+                            </div>
+                            <?php } ?>
+                            <form action="" id="form-skenario">
                                 <div class="form-group row">
                                     <label class="col-sm-12 col-md-12 col-form-label">MARGIN KEUNTUNGAN AGROINDUSTRI (%)</label>
                                     <div class="col-sm-12 col-md-12">
@@ -212,17 +227,21 @@
                                     <input type="number" step="any" class="form-control" value="<?=@$_GET['selisih']?$_GET['selisih']:5000?>" name="selisih">
                                     </div>
                                 </div>
-                                <button class="btn btn-primary">submit</button>
+                                <button class="btn btn-primary btn-sm scroll-click">submit</button>
                             </form>
-                        </div>
-                        <div class="col-sm-8" id="tampilPenetapan">
                         </div>
                         <br>
                         <hr>
                     </div>
+                                <hr>
                     <div class="clearfix">
+                    
                         <div class="pull-right">
+                            <a href="?tombol=tambah" class="btn btn-primary btn-sm scroll-click" ><i class="fa fa-plus-circle"></i> Tambah Data</a>
+                            <?php if($jumlahFinansial > 0){ ?>
                             <a href="#" class="btn btn-info btn-sm scroll-click" data-table="penjelasan" onclick="viewTable(this)"><i class="fa fa-plus-circle"></i> Lihat Penjelasan</a>
+                            <?php } ?>
+                            
 						</div>
                     </div>
 				</div>
@@ -294,7 +313,7 @@
                                         <td scope="row"><?=$rowFinansial['finansial_barang_umur']?></td>
                                         <td scope="row">
                                             <a href="?tombol=edit&id=<?=$rowFinansial['finansial_barang_id']?>" class="btn btn-primary"><i class="fi-pencil"></i></a>
-                                            <a href="<?=$baseUrl."prediksi/finansial/".$id."/barang/hapus/".$rowFinansial['finansial_barang_id']?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                            <a href="#" data-pesan='Apakah anda yakin menghapus data "<?=$rowFinansial['finansial_barang_nama']?>"?' data-link="<?=$baseUrl."prediksi/finansial/".$id."/barang/hapus/".$rowFinansial['finansial_barang_id']?>" class="btn btn-danger" data-toggle="modal" data-target="#Medium-modal" onclick="setDelete(this)" ><i class="fa fa-trash"></i></a>
                                         </td>
                                     </tr>
                                     <?php $no++; } ?>
@@ -359,7 +378,8 @@
                                         <td scope="row">Rp. <?=number_format($nilai*24*12,2,",",".")?></td>
                                         <td scope="row">
                                             <a href="?tombol=edit&id=<?=$rowFinansial['finansial_barang_id']?>" class="btn btn-primary"><i class="fi-pencil"></i></a>
-                                            <a href="<?=$baseUrl."prediksi/finansial/".$id."/barang/hapus/".$rowFinansial['finansial_barang_id']?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                            <a href="#" data-pesan='Apakah anda yakin menghapus data "<?=$rowFinansial['finansial_barang_nama']?>"?' data-link="<?=$baseUrl."prediksi/finansial/".$id."/barang/hapus/".$rowFinansial['finansial_barang_id']?>" class="btn btn-danger" data-toggle="modal" data-target="#Medium-modal" onclick="setDelete(this)" ><i class="fa fa-trash"></i></a>
+                                            <!-- <a href="<?=$baseUrl."prediksi/finansial/".$id."/barang/hapus/".$rowFinansial['finansial_barang_id']?>" class="btn btn-danger"><i class="fa fa-trash"></i></a> -->
                                         </td>
                                     </tr>
                                     <?php $no++; } ?>
@@ -1028,7 +1048,7 @@
                                         }
                                         
                                     ?>
-                                    <tr <?=$HJATC==$_GET['HJATC']?'style="background-color: #cccccc;"':''?> >
+                                    <tr <?=$HJATC==@$_GET['HJATC']?'style="background-color: #cccccc;"':''?> >
                                         <td><?=$HJATC?></td>
                                         <td><?=$JPATC?></td>
                                         <td><?=$MKA?></td>

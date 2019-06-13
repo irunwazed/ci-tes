@@ -3,6 +3,8 @@
                 
                 $name = "Metode Pengembangan Agroindustri";
                 
+                // print_r($dataPilih);
+
                 ?>
                 
                 <div class="page-header">
@@ -21,6 +23,13 @@
 					</div>
 				</div>
                 <?php if(@$_GET['tombol']){ ?>
+                <?php
+                    if($_GET['tombol'] == 'edit'){
+                        $link = "edit";
+                    }else{
+                        $link = "tambah";
+                    }    
+                ?>
                 <!-- Default Basic Forms Start -->
                 <div class="pd-20 bg-white border-radius-4 box-shadow mb-30">
 					<div class="clearfix">
@@ -32,11 +41,12 @@
 							<a href="?" class="btn btn-primary btn-sm scroll-click" ><i class="fi-arrow-left"></i> Kembali</a>
 						</div>
 					</div>
-                    <form action="<?=$baseUrl."prediksi/ahp/tambah"?>" method="POST">
+                    <form action="<?=$baseUrl."prediksi/ahp/".$link?>" method="POST">
+                        <input type="hidden" name="id" value="<?=@$_GET['id']?>">
                         <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Nama <?=$name?></label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control" type="text" placeholder="Masukkan Nama AHP" name="nama">
+								<input class="form-control" type="text" placeholder="Masukkan Nama AHP" name="nama" value="<?=@$dataPilih['nama_ahp']?>">
 							</div>
 						</div>
                         <div class="form-group row">
@@ -50,10 +60,12 @@
                                         <a href="javascript:void(0);" onclick="deleteKriteria(1)"><i class="fa fa-trash"></i></a>
                                     </div>
                                 </div>
-							</div>
+                            </div>
+                            <?php if(@$_GET['tombol'] != "edit"){ ?>
                             <div class="col-sm-2 col-md-2 col-2">
                                 <a href="javascript:void(0);" onclick="addKriteria()"><i class="fa fa-plus-square"> Tambah Kriteria</i></a>
                             </div>
+                            <?php } ?>
 						</div>
                         <button class="btn btn-primary">Tambah Data</button>
                     </form>
@@ -99,8 +111,8 @@
                                 </td>
                                 <td scope="row">
                                     <a href="<?=$baseUrl."prediksi/ahp/".$rowData['id']?>" class="btn btn-success"><i class="fi-magnifying-glass"></i></a>
-                                    <!-- <a href="" class="btn btn-primary"><i class="fi-pencil"></i></a> -->
-                                    <a href="<?=$baseUrl."prediksi/ahp/hapus/".$rowData['id']?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                    <a href="?tombol=edit&id=<?=$rowData['id']?>" class="btn btn-primary"><i class="fi-pencil"></i></a>
+                                    <a href="#" data-pesan='Apakah anda yakin menghapus data "<?=$rowData['nama_ahp']?>"?' data-link="<?=$baseUrl."prediksi/ahp/hapus/".$rowData['id']?>" class="btn btn-danger"  data-toggle="modal" data-target="#Medium-modal" onclick="setDelete(this)" ><i class="fa fa-trash"></i></a>
                                 </td>
                             </tr>
                             <?php $no++; } ?>

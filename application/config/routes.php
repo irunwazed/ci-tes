@@ -59,8 +59,10 @@ $route['user'] = "UserController/beranda";
 
 $route['prediksi/ahp'] = "prediksi/AhpController/daftarAhp";
 $route['prediksi/ahp/(:num)'] = "prediksi/AhpController/formAhp/$1";
+$route['prediksi/ahp/(:num)/save'] = "prediksi/AhpController/savePdf/$1/1";
 $route['prediksi/ahp/hapus/(:num)'] = "prediksi/AhpController/deleteAhp/$1";
 $route['prediksi/ahp/tambah'] = "prediksi/AhpController/addAhp";
+$route['prediksi/ahp/edit'] = "prediksi/AhpController/updateAhp";
 $route['prediksi/ahp/insertrespon'] = "prediksi/AhpController/insertResponAhp";
 $route['prediksi/ahp/editrespon'] = "prediksi/AhpController/editResponAhp";
 $route['prediksi/ahp/(:num)/hapus/(:num)'] = "prediksi/AhpController/deleteResponAhp/$2/$1";
@@ -69,6 +71,7 @@ $route['mpe/(:num)'] = "prediksi/MpeController/daftarMpe/1/$1";
 
 $route['prediksi/mpe'] = "prediksi/MpeController/daftarMpe";
 $route['prediksi/mpe/tambah'] = "prediksi/MpeController/addMpe";
+$route['prediksi/mpe/edit'] = "prediksi/MpeController/updateMpe";
 $route['prediksi/mpe/(:num)'] = "prediksi/MpeController/formMpe/$1";
 $route['prediksi/mpe/hapus/(:num)'] = "prediksi/MpeController/deleteMpe/$1";
 $route['prediksi/mpe/(:num)/hapus/(:num)'] = "prediksi/MpeController/deleteRespon/$2/$1";
@@ -79,8 +82,10 @@ $route['prediksi/mpe/(:num)/save/(:num)'] = "prediksi/MpeController/savePdf/$1/$
 
 $route['prediksi/finansial'] = "prediksi/FinansialController/daftar";
 $route['prediksi/finansial/tambah'] = "prediksi/FinansialController/finansialInput";
+$route['prediksi/finansial/edit'] = "prediksi/FinansialController/finansialUpdate";
 $route['prediksi/finansial/hapus/(:num)'] = "prediksi/FinansialController/finansialHapus/$1";
 $route['prediksi/finansial/(:num)'] = "prediksi/FinansialController/perhitungan/$1";
+$route['prediksi/finansial/(:num)/save'] = "prediksi/FinansialController/savePdf/$1/1";
 
 $route['prediksi/finansial/penetapan'] = "prediksi/FinansialController/daftarPenetapan";
 $route['prediksi/finansial/penetapan/tambah'] = "prediksi/FinansialController/finansialnInputPenetapa";
@@ -104,6 +109,7 @@ $route['bahan/penyedia/(:any)'] = "prediksi/EkonomiController/bahanAllPenyedia/$
 // $route['bahan/penyedia/rop'] = "prediksi/EkonomiController/bahanAllPenyedia/rop";
 // $route['bahan/penyedia/rop'] = "prediksi/EkonomiController/bahanAllPenyedia/kll";
 $route['bahan/penyedia/(:any)/(:num)'] = "prediksi/EkonomiController/bahanPenyedia/$2/$1";
+$route['bahan/penyedia/(:any)/(:num)/save'] = "prediksi/EkonomiController/bahanPenyediaSave/$2/$1";
 
 
 $route['prediksi/pendukung/satuan'] = "prediksi/PendukungController/satuan";
@@ -119,6 +125,7 @@ $route['prediksi/finansial/(:num)/barang/hapus/(:num)'] = "prediksi/FinansialCon
 
 $route['prediksi/kebutuhan-air'] = "prediksi/AirController/getData";
 $route['prediksi/kebutuhan-air/(:num)'] = "prediksi/AirController/hitung/$1";
+$route['prediksi/kebutuhan-air/(:num)/save'] = "prediksi/AirController/savePdf/$1/1";
 $route['prediksi/kebutuhan-air/tambah'] = "prediksi/AirController/create";
 $route['prediksi/kebutuhan-air/edit'] = "prediksi/AirController/update";
 $route['prediksi/kebutuhan-air/hapus/(:num)'] = "prediksi/AirController/delete/$1";

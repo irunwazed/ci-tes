@@ -48,8 +48,28 @@
     //     $("#bahan").val("<?=@$dataPilih[0]['finansial_bahan_id']?>").change();
     //     // console.log(data);
     // }
+    skenario();
+    skenario1();
+    function skenario(tampil = false){
+        if(tampil){
+            $("#form-skenario").removeClass("set-hide");
+            $("#tombol-skenario").attr("onclick", "skenario(false)").text("Sembunyikan Skenario");
+        }else{
+            $("#form-skenario").addClass("set-hide");
+            $("#tombol-skenario").attr("onclick", "skenario(true)").text("Tampilkan Skenario");
+        }
+    }
 
-   
+    function skenario1(tampil = false){
+        if(tampil){
+            $("#form-skenario-1").removeClass("set-hide");
+            $("#tombol-skenario-1").attr("onclick", "skenario1(false)").text("Sembunyikan Skenario");
+        }else{
+            $("#form-skenario-1").addClass("set-hide");
+            $("#tombol-skenario-1").attr("onclick", "skenario1(true)").text("Tampilkan Skenario");
+        }
+    }
+
     <?php if(@$status == 'penetapan'){ ?>
         $("#hasilFinansial").addClass("set-hide");
         $("#tampilPenetapan").html($("#penentuanHarga").html());

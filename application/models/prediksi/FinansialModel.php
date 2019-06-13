@@ -11,6 +11,14 @@ class FinansialModel extends CI_Model
         $this->table = 'finansial';
     }
 
+    public function selectOne($id){
+        $this->db->join('finansial_penerimaan', 'finansial_penerimaan.finansial_id = finansial.finansial_id', 'left');
+        $this->db->where($this->table.'.finansial_id', $id);
+        // echo "sdfs";
+        $hasil = $this->db->get($this->table)->result_array();
+        return $hasil;
+    }
+
     public function selectAll($post = array()){
         // print_r($post); finansial_penerimaan
         // $this->db->where('username', $post['user']);
@@ -19,7 +27,6 @@ class FinansialModel extends CI_Model
         
 		return $hasil;
     }
-
 
     public function selectBiaya($id){
         // $this->db->join('finansial_bahan', 'finansial_bahan.finansial_bahan_id = finansial_barang.finansial_bahan_id', 'left');
@@ -88,6 +95,23 @@ class FinansialModel extends CI_Model
 
         $hasil = $this->db->insert('finansial_penerimaan', array(
             'finansial_id' => $this->db->insert_id(),
+            'finansial_penerimaan_produk' => $post['produk'],
+            'finansial_penerimaan_harga' => $post['harga'],
+        ));
+        
+		return $hasil;
+    }
+
+    public function finansialUpdate($post){
+
+        $this->db->where('finansial_id', $post['id']);
+        $hasil = $this->db->update('finansial', array(
+            'finansial_nama' => $post['nama'],
+            'finansial_waktu' => $post['lama'],
+        ));
+
+        $this->db->where('finansial_id', $post['id']);
+        $hasil = $this->db->update('finansial_penerimaan', array(
             'finansial_penerimaan_produk' => $post['produk'],
             'finansial_penerimaan_harga' => $post['harga'],
         ));

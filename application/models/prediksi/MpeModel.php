@@ -29,6 +29,13 @@ class MpeModel extends CI_Model
 		return $hasil;
     }
 
+    public function selectOne($id){
+        
+        $this->db->where('mpe_id', $id);
+        $hasil = $this->db->get($this->table)->result_array();
+        return $hasil;
+    }
+
     public function selectOneKriteriaRespon($id){
         $this->db->where('mpe_respon_id', $id);
         $this->db->order_by("mpe_kriteria_id", "asc");
@@ -263,6 +270,45 @@ class MpeModel extends CI_Model
     }
 
     // . masukkan data mpe
+
+    // edit Mpe
+
+    public function updateMpe($post){
+        $result = false;
+        // mpe
+        $this->db->where('mpe_id', $post['id']);
+        $result = $this->db->update('mpe', array(
+            'nama' => $post['nama'],
+            'menu' => $post['menu'],
+        ));
+
+        //kriteria
+        $dataKriteria = $this->selectKriteria($post['id']);
+        $no = 0;
+        foreach($dataKriteria as $row){
+            $this->db->where('mpe_kriteria_id', $row['mpe_kriteria_id']);
+            $result = $this->db->update('mpe_kriteria', array(
+                'kriteria' => @$post['kriteria'][$no],
+            ));
+            $no++;
+        }
+
+        //wilayah
+        $dataWilayah = $this->selectWilayah($post['id']);
+        $no = 0;
+        foreach($dataWilayah as $row){
+            $this->db->where('mpe_wilayah_id', $row['mpe_wilayah_id']);
+            $result = $this->db->update('mpe_wilayah', array(
+                'wilayah' => @$post['wilayah'][$no],
+            ));
+            $no++;
+        }
+
+        return $result;
+
+    }
+
+    // . edit Mpe
 
     // delete Mpe
     public function deleteMpe($id){

@@ -71,29 +71,50 @@ class MPE {
 
     }
 
-    public function bobot(){
-        $bobot = $this->bobot;
-        $kriteria = $this->kriteria;
+    public function rankBobot($bobot){
+        $dataBobot = array();
+        for($i = 0; $i < count($bobot); $i++){
+            $dataBobot[$i]['no'] = $i;
+            $dataBobot[$i]['nilai'] = $bobot[$i];
+        }
+        $dataBobot = $this->bubble_sort($dataBobot);
+        return $dataBobot;
+    }
+
+    public function bobot($bobot = null, $kriteria = null){
+        if($kriteria == null && $bobot == null){
+            $bobot = $this->bobot;
+            $kriteria = $this->kriteria;
+        }
+        $dataBobot = $this->rankBobot($bobot);
         ?>
         <div class="form-group row">
             <label class="col-sm-12 col-form-label">Prioritas Kriteria</label>
         </div>
-        <table class="table table-bordered">
+        <table  style="border-collapse: collapse; width:100%;">
             <thead>
                 <tr>
                     <th scope="col" <?=$this->style?> >No</th>
                     <th scope="col" <?=$this->style?> >Kriteria</th>
                     <th scope="col" <?=$this->style?> >Bobot</th>
+                    <th scope="col" <?=$this->style?> >Prioritas</th>
                 </tr>
             </thead>
             <tbody>
-                <?php $no = 0; foreach($kriteria as $rowKriteria){ ?>
+                <?php $no = 0; foreach($kriteria as $rowKriteria){ 
+                    foreach($dataBobot as $rowBobot){
+                        if($rowBobot['no'] == $no){
+                    ?>
                 <tr>
                     <td scope="row" <?=$this->style?> ><?=$no+1?></td>
                     <td scope="row" <?=$this->style?> ><?=$rowKriteria?></td>
-                    <td scope="row" <?=$this->style?> ><div><?=number_format($bobot[$no],4,",",".")?></div></td>
+                    <td scope="row" <?=$this->style?> ><div><?=number_format($dataBobot[$no]['nilai'],4,",",".")?></div></td>
+                    <td scope="row" <?=$this->style?> ><div><?=$dataBobot[$no]['no']+1?></div></td>
                 </tr>
-                <?php $no++; } ?>
+                <?php 
+                        }
+                    }
+                $no++; } ?>
             </tbody>
         </table>
         <br>
@@ -153,6 +174,7 @@ class MPE {
                             <tr>
                                 <th scope="col" rowspan="2">No</th>
                                 <th scope="col" rowspan="2">Alternatif</th>
+                                <th scope="col" rowspan="2">Nilai</th>
                                 <th scope="col" rowspan="2">Prioritas</th>
                             </tr>
                         </thead>
@@ -161,6 +183,7 @@ class MPE {
                             <tr>
                                 <td scope="row"><?=$no+1?></td>
                                 <td scope="row"><?=$rowWilayah?></td>
+                                <td scope="row"><div><?=number_format($rank[$no]['nilai'],4,",",".")?></div></td>
                                 <td scope="row"><div><?=@$rank[$no]['no']+1?></div></td>
                             </tr>
                             <?php $no++; } ?>
@@ -375,11 +398,12 @@ class MPE {
         <div id="hasilRekap">
             <div class="set-hide">
                 <div id="hasil-rekap">
-                    <table class="table table-bordered">
+                    <table  style="border-collapse: collapse; width:100%;">
                         <thead>
                             <tr>
                                 <th scope="col" <?=$this->style?> >No</th>
                                 <th scope="col" <?=$this->style?> >Alternatif</th>
+                                <th scope="col" <?=$this->style?> >Nilai</th>
                                 <th scope="col" <?=$this->style?> >Prioritas</th>
                             </tr>
                         </thead>
@@ -388,6 +412,7 @@ class MPE {
                             <tr>
                                 <td scope="row" <?=$this->style?> ><?=$no+1?></td>
                                 <td scope="row" <?=$this->style?> ><?=$rowWilayah?></td>
+                                <td scope="row" <?=$this->style?> ><div><?=number_format($rank[$no]['nilai'],4,",",".")?></div></td>
                                 <td scope="row" <?=$this->style?> ><div><?=@$rank[$no]['no']+1?></div></td>
                             </tr>
                             <?php $no++; } ?>
@@ -422,12 +447,9 @@ class MPE {
         }
         
         for($no = 0; $no < count($kriteria); $no++){ ?>
-            <div class="form-group row">
-                <label class="col-sm-12 col-form-label"><?="Kriteria ".($no+1)." Ketersediaan ".$kriteria[$no]?></label>
-            </div>
             <div class="row">
                 <div class="col-6 hasil-kriteria" id="hasil-kriteria-<?=$no?>">
-                    <table class="table table-bordered ">
+                    <table  style="border-collapse: collapse; width:100%;">
                         <thead>
                             <tr>
                                 <th scope="col" <?=$this->style?> >No</th>

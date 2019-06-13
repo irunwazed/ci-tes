@@ -54,7 +54,7 @@ class AirController extends CI_Controller {
         $data['footer'] = $this->load->view('include/footer', $config, true);
         $data['script'] = $this->load->view('include/script', $config, true);
         $data['myscript'] = $this->load->view('prediksi/air-hitung/script', $config, true);
-
+        $data['id'] = $id;
         $data['dataAir'] = $this->AirModel->selectOneData($id);
         
         $data['isi'] = $this->load->view("prediksi/air-hitung/data", $data, true);
@@ -88,6 +88,36 @@ class AirController extends CI_Controller {
         $this->pesan($result, 'Berhasil Menghapus Data', 'Gagal Menghapus Data');
 
         redirect(base_url('prediksi/kebutuhan-air'),'refresh');
+    }
+
+    public function savePdf($id = null, $save = 1){
+        $config['baseTemplate'] = $this->baseTemplate;
+        $data['baseTemplate'] = $this->baseTemplate;
+
+        $config['baseUrl'] = $this->baseUrl;
+        $data['baseUrl'] = $this->baseUrl;
+
+        $data['head'] = $this->load->view('include/head', $config, true);
+        $data['header'] = $this->load->view('include/header', $config, true);
+        $data['sidebar'] = $this->load->view('include/sidebar', $config, true);
+        $data['footer'] = $this->load->view('include/footer', $config, true);
+        $data['script'] = $this->load->view('include/script', $config, true);
+        $data['myscript'] = $this->load->view('prediksi/air-hitung/script', $config, true);
+
+        $data['dataAir'] = $this->AirModel->selectOneData($id);
+        $data['id'] = $id;
+        
+        $post = $this->input->post();
+
+        $this->load->library('M_pdf');
+        if($save){
+            $this->m_pdf->getPdf('Air', 'pdf/air', $data, 'miring');
+        }else{
+            $this->load->view('pdf/air', $data);
+
+        }
+        
+
     }
 
     public function pesan($result, $pesanBerhasil, $pesanGagal){

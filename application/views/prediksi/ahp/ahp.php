@@ -2,6 +2,8 @@
                 <?php 
                 $name = '';
                 $kriteria = array();
+                $jumlahRespon = count($dataAhpRespon);
+                // echo $jumlahRespon;
                 if(@$dataAhp[0]){
                     $kriteria = json_decode($dataAhp[0]['kriteria'], true);
                     $name = @$dataAhp[0]['nama_ahp'];
@@ -149,6 +151,7 @@
                             <!-- <a href="?tombol=tambah" class="btn btn-primary btn-sm scroll-click" ><i class="fa fa-plus-circle"></i> Tambah Data</a> -->
 						</div>
 					</div>
+                    <a href="<?=base_url()."prediksi/ahp/".@$id."/save"?>" class="btn btn-warning">PDF</a>
                     <div class="col-12 row" style="padding:10px">
                         <div class="col-5"></div>
                         <div class="bg-success col-2 text-white" style="text-align: center;" id="hasil"></div>
@@ -159,8 +162,11 @@
                     <hr>
                     <div class="clearfix">
                         <div class="pull-right">
+                            <a href="?tombol=tambah" class="btn btn-primary btn-sm scroll-click" ><i class="fa fa-plus-circle"></i> Tambah Responen</a>
+                            <?php if($jumlahRespon > 0){ ?>
                             <a href="#" class="btn btn-info btn-sm scroll-click" data-table="penjelasan" onclick="viewTable(this)"><i class="fa fi-arrow-down"></i> Lihat Penjelasan</a>
-						</div>
+                            <?php } ?>
+                        </div>
                     </div>
                 </div>
 
@@ -190,7 +196,7 @@
                             </div>
                             <div class="col-sm-2 col-md-2">
                                 <a href="<?=$baseUrl."prediksi/ahp/".$ahp_id."?tombol=edit&id=".$row['id']?>" class="btn btn-primary"><i class="fi-pencil"></i></a>
-                                <a href="<?=$baseUrl."prediksi/ahp/".$ahp_id."/hapus/".$row['id']?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                <a href="#" data-pesan='Apakah anda yakin menghapus respon "<?=$row['nama']?>"?' data-link="<?=$baseUrl."prediksi/ahp/".$ahp_id."/hapus/".$row['id']?>" class="btn btn-danger" data-toggle="modal" data-target="#Medium-modal" onclick="setDelete(this)" ><i class="fa fa-trash"></i></a>
                             </div>
                         </div>
                         <table class="table table-bordered">

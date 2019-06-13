@@ -67,7 +67,7 @@ class MpeController extends CI_Controller {
             "Metode Pemilihan Produk",
             "Sistem Pengadaan Bahan Baku",
             "Metode Penentuan Lokasi Agroindustri",
-            "Dengan Limbah",
+            "Metode Penanganan Air Limbah",
         );
 
         $data['head'] = $this->load->view('include/head', $config, true);
@@ -75,7 +75,6 @@ class MpeController extends CI_Controller {
         $data['sidebar'] = $this->load->view('include/sidebar', $config, true);
         $data['footer'] = $this->load->view('include/footer', $config, true);
         $data['script'] = $this->load->view('include/script', $config, true);
-        $data['myscript'] = $this->load->view('prediksi/mpe-all/myscript', $config, true);
         $data['menu'] = $menu;
         $data['data'] = $this->MpeModel->selectMenu($menu);
         $data['namaMenu'] = $namaMenu[$menu];
@@ -88,6 +87,16 @@ class MpeController extends CI_Controller {
             $data['data'][$i]['dataWilayah'] = $this->MpeModel->selectWilayah($id);
         }
 
+        if(@$_GET['tombol']=="edit"){
+            $data['dataPilih'] = @$this->MpeModel->selectOne(@$_GET['id']);
+            for($i =0; $i < count($data['dataPilih']); $i++){
+                $data['dataPilih'][$i]['dataKriteria'] = $this->MpeModel->selectKriteria($id);
+                $data['dataPilih'][$i]['dataWilayah'] = $this->MpeModel->selectWilayah($id);
+            }
+            $data['dataPilih'] = $data['dataPilih'][0];
+        }
+        
+        $data['myscript'] = $this->load->view('prediksi/mpe-all/myscript', $data, true);  
         $data['isi'] = $this->load->view('prediksi/mpe-all/mpe', $data, true);
         $this->admintemplate->templateAll($data);
 
@@ -101,6 +110,15 @@ class MpeController extends CI_Controller {
 
         redirect(base_url('mpe/'.$post['menu']));
 
+    }
+
+    public function updateMpe(){
+        $post = $this->input->post();
+        $result = $this->MpeModel->updateMpe($post);
+
+        $this->pesan($result, 'Berhasil Mengubah Data', 'Gagal Mengubah Data'); 
+
+        redirect(base_url('mpe/'.$post['menu']));
     }
 
     public function deleteMpe($id){

@@ -5,25 +5,36 @@ class AHP {
 
     private static $CI;
     private $kriteria, $name, $dataAhp, $kriteriaJumlah, $normalisasi, $bobot, $arrHasil, $lamdaMax, $cIndex, $index, $hasil, $ri;
-
+    private $style;
     public function __construct()
     {
         self::$CI = & get_instance();
     }
 
-    public function getAhp($dataAhp, $kriteria, $name){
+    public function getAhp($dataAhp, $kriteria, $name, $tampil = true){
         $this->dataAhp = $dataAhp;
         $this->kriteria = $kriteria;
         $this->name = $name;
 
-        $this->rekapitulasi();
-        echo "<h2>OPERASI</h2>";
-        $this->jumlahSetiapElemen();
-        $this->membagiSetiapElemen();
-        $this->normalisasi();
-        $this->prioritas();
-        $this->ci();
-        $this->hasilAll();
+        if($tampil){
+            $this->rekapitulasi();
+            echo "<h2>OPERASI</h2>";
+            $this->jumlahSetiapElemen();
+            $this->membagiSetiapElemen();
+            $this->normalisasi();
+            $this->prioritas();
+            $this->ci();
+            $this->hasilAll();
+        }else{
+            $this->style = ' style="border: 1px solid; padding: 10px;"';
+            $this->rekapitulasiNo();
+            $this->membagiSetiapElemenNo();
+            $this->normalisasiNo();
+            $this->ciNo();
+            $this->hasilPdf();
+        }
+
+        
         
         return $this->hasil;
 
@@ -397,6 +408,148 @@ class AHP {
         // print_r($arr);
         // echo "</pre>";
         return $arr;
+    }
+
+    public function rekapitulasiNo(){
+        $dataAhp = $this->dataAhp;
+        $kriteria = $this->kriteria;
+        $name = $this->name;
+        
+        $no = 0; 
+        foreach($kriteria as $rowKriteria){ 
+            for($i = 0; $i < count($dataAhp); $i++){ 
+                if(@$kriteriaJumlah[$i]){
+                    $kriteriaJumlah[$i] += $dataAhp[$no][$i];
+                }else{
+                    $kriteriaJumlah[$i] = $dataAhp[$no][$i];
+                }
+            }  
+            $no++; 
+        } 
+    
+        $this->kriteriaJumlah = @$kriteriaJumlah; 
+    }
+
+    public function membagiSetiapElemenNo(){
+        $kriteriaJumlah = $this->kriteriaJumlah;
+        $dataAhp = $this->dataAhp;
+        $kriteria = $this->kriteria;
+        $name = $this->name;
+        
+        $no = 0; 
+        foreach($kriteria as $rowKriteria){  
+            for($i = 0; $i < count($dataAhp); $i++){ 
+                $dataAhp[$no][$i] = $dataAhp[$no][$i] / $kriteriaJumlah[$i];
+            }  
+            $no++; 
+        } 
+        $this->dataAhp = @$dataAhp;
+    }
+
+    public function normalisasiNo(){
+        $kriteriaJumlah = $this->kriteriaJumlah;
+        $dataAhp = $this->dataAhp;
+        $kriteria = $this->kriteria;
+        $name = $this->name;
+        
+        $no = 0; $lamdaMax = 0; foreach($kriteria as $rowKriteria){ 
+            $normalisasi[$no] = array_sum($dataAhp[$no]);
+            $arrHasil[$no] = array(
+                'no' => $no,
+                'kriteria' => $rowKriteria,
+                'nilai' =>$normalisasi[$no]
+            );
+            $lamdaMax += $normalisasi[$no]*$kriteriaJumlah[$no];
+            $no++; 
+        } 
+        $n = count($kriteria);
+        $this->normalisasi = @$normalisasi;
+        $this->lamdaMax = @$lamdaMax;
+        $this->cIndex = (@$lamdaMax-$n)/$n-1;
+
+        $this->ri = array(
+            0,0,0,0.58,0.9,1.12,1.24,1.32,1.41,1.45,1.51,1.52,1.54,1.56,1.58,1.59
+        );
+
+        $this->arrHasil = $this->bubble_sort(@$arrHasil);
+        
+    }
+
+    public function ciNo(){
+        $index = rand(3,15);
+        $this->index = $index;
+        $this->hasil = $this->cIndex/$this->ri[$index];
+                    
+    }
+
+    public function hasilPdf(){
+        $kriteriaJumlah = $this->kriteriaJumlah;
+        $dataAhp = $this->dataAhp;
+        $kriteria = $this->kriteria;
+        $normalisasi = $this->normalisasi;
+        $arrHasil = $this->arrHasil;
+        $index = $this->index;
+        ?>
+        <!-- <div class="form-group row">
+            <label class="col-sm-12 col-form-label">5. Consistency Ratio</label>
+        </div> -->
+        <h2 style="text-align: center;"><?=$this->name?></h2>
+            <h4 style="text-align: center;">Consistency Ratio : <?=number_format($this->hasil,4,",",".")?></h4>
+                <table style="border-collapse: collapse; width:100%;">
+                    <thead>
+                        <tr>
+                            <th <?=$this->style?> >KRITERIA</th>
+                            <th <?=$this->style?> >BOBOT</th>
+                            <th <?=$this->style?> >PRIORITAS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $no = 0; $jumBobot = 0; $jumPersentasi = 0; foreach($arrHasil as $row){ 
+                            $bobot[$no] = $row['nilai']/count($kriteria);
+                            $jumBobot += $bobot[$no];
+                            ?>
+                        <tr>
+                            <th <?=$this->style?> ><?=$row['kriteria']?></th>
+                            <td <?=$this->style?> ><div><?=number_format($bobot[$no],4,",",".")?></div></td>
+                            <td <?=$this->style?> ><div><?=$no+1?></div></td>
+                        </tr>
+                        <?php $no++; } ?>
+                        <tr>
+                            <th <?=$this->style?> >Jumlah</th>
+                            <td <?=$this->style?> ><div><?=number_format($jumBobot,4,",",".")?></div></td>
+                            <td <?=$this->style?> ></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr>
+                <table style="border-collapse: collapse; width:100%;">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Hasil</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th <?=$this->style?> >Lamda Maximum</th>
+                            <td <?=$this->style?> ><div><?=number_format($this->lamdaMax,4,",",".")?></div></td>
+                        </tr>
+                        <tr>
+                            <th <?=$this->style?> >Consistency Index</th>
+                            <td <?=$this->style?> ><div><?=number_format($this->cIndex,4,",",".")?></div></td>
+                        </tr>
+                        <tr>
+                            <th <?=$this->style?> >Random Index</th>
+                            <td <?=$this->style?> ><div><?=$index." => ".$this->ri[$index]?></div></td>
+                        </tr>
+                        <tr>
+                            <th <?=$this->style?> >Consistency Ratio</th>
+                            <td <?=$this->style?> ><div><?=number_format($this->hasil,4,",",".")?></div></td>
+                        </tr>
+                    </tbody>
+                </table>
+        <br>
+        <hr>
+        <?php
     }
 
 }

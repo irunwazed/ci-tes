@@ -55,6 +55,17 @@ class AhpModel extends CI_Model
         return $result;
     }
 
+    public function updateAhp($post){
+        $post = $this->security->xss_clean($post);
+        $result = false;
+        $this->db->where('id', $post['id']);
+        $result = $this->db->update($this->table, array(
+            'nama_ahp' => $post['nama'],
+            'kriteria' => json_encode($post['kriteria']),
+        ));
+        return $result;
+    }
+
     public function deleteAhp($post){
         $post = $this->security->xss_clean($post);
         $result = false;

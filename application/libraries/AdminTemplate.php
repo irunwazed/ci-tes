@@ -40,8 +40,32 @@ class AdminTemplate {
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-            <?php } ?>
-            <?=$data['isi']?>
+			<?php } ?>
+			<div id="coba-isi">
+            	<?=$data['isi']?>
+			</div>
+			<!-- Medium modal -->
+			<div class="col-md-4 col-sm-12">
+						<div class="">
+							<div class="modal fade " id="Medium-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered ">
+									<div class="modal-content" >
+										<div class="modal-header">
+											<h4 class="modal-title" id="myLargeModalLabel">Hapus</h4>
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+										</div>
+										<div class="modal-body">
+											<p id="pesan-hapus">Apakah Anda Yakin Menghapus Data?</p>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+											<a href="#" id="data-delete" class="btn btn-danger">Hapus</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
             </div>
 			<?=$data['footer']?>
 		</div>
@@ -61,6 +85,14 @@ class AdminTemplate {
 	<script src="<?=base_url('public/template/')?>src/plugins/datatables/media/js/button/vfs_fonts.js"></script>
 	<script>
 		
+		function setDelete(obj){
+			let link = $(obj).attr("data-link");
+			let pesan = $(obj).attr("data-pesan");
+			$("#data-delete").attr("href", link);
+			if(pesan != ''){
+				$("#pesan-hapus").text(pesan);
+			}
+		}
 
 		function viewTable(obj){
 			let table = $(obj).attr("data-table");

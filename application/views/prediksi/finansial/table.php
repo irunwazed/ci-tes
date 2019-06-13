@@ -15,6 +15,15 @@
 					</div>
 				</div>
                 <?php if(@$_GET['tombol']){ ?>
+				<?php
+                    if($_GET['tombol'] == 'edit'){
+						$link = "edit";
+						
+                    }else{
+                        $link = "tambah";
+					}    
+					// print_r($dataPilih);
+                ?>
                 <!-- Default Basic Forms Start -->
                 <div class="pd-20 bg-white border-radius-4 box-shadow mb-30">
 					<div class="clearfix">
@@ -26,29 +35,30 @@
 							<a href="?" class="btn btn-primary btn-sm scroll-click" ><i class="fi-arrow-left"></i> Kembali</a>
 						</div>
 					</div>
-                    <form action="<?=$baseUrl."prediksi/finansial/tambah"?>" method="POST">
+                    <form action="<?=$baseUrl."prediksi/finansial/".$link?>" method="POST">
+						<input type="hidden" name="id" value="<?=@$_GET['id']?>">
                         <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Nama</label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control" type="text" placeholder="Masukkan Nama" name="nama">
+								<input class="form-control" type="text" placeholder="Masukkan Nama" name="nama" value="<?=@$dataPilih['finansial_nama']?>">
 							</div>
 						</div>
                         <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Umur Investasi (Tahun)</label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control" type="number" placeholder="Masukkan Umur Investasi" name="lama">
+								<input class="form-control" type="number" placeholder="Masukkan Umur Investasi" name="lama" value="<?=@$dataPilih['finansial_waktu']?>">
 							</div>
                         </div>
                         <div class="form-group row">
-							<label class="col-sm-12 col-md-2 col-form-label">Produk perhari</label>
+							<label class="col-sm-12 col-md-2 col-form-label">Produk Per Hari (Kg)</label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control" type="number" placeholder="Masukkan Jumlah Produk Harian" name="produk">
+								<input class="form-control" type="number" placeholder="Masukkan Jumlah Produk Harian" name="produk" value="<?=@$dataPilih['finansial_penerimaan_produk']?>">
 							</div>
                         </div>
                         <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Harga Produk</label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control" type="number" placeholder="Masukkan Harga Produk" name="harga">
+								<input class="form-control" type="number" placeholder="Masukkan Harga Produk" name="harga" value="<?=@$dataPilih['finansial_penerimaan_harga']?>">
 							</div>
 						</div>
                         <button class="btn btn-primary">Tambah Data</button>
@@ -93,7 +103,8 @@
                                 <td scope="row"><?=$rowData['finansial_penerimaan_harga']*12*24?></td>
                                 <td scope="row">
                                     <a href="<?=$baseUrl."prediksi/finansial/".(@$status?$status.'/':'').$rowData['finansial_id']?>" class="btn btn-success"><i class="fi-magnifying-glass"></i></a>
-                                    <a href="<?=$baseUrl."prediksi/finansial/hapus/".$rowData['finansial_id']?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                    <a href="?tombol=edit&id=<?=$rowData['finansial_id']?>" class="btn btn-primary"><i class="fi-pencil"></i></a>
+									<a href="#" data-pesan='Apakah anda yakin menghapus data "<?=$rowData['finansial_nama']?>"?' data-link="<?=$baseUrl."prediksi/finansial/hapus/".$rowData['finansial_id']?>" class="btn btn-danger" data-toggle="modal" data-target="#Medium-modal" onclick="setDelete(this)" ><i class="fa fa-trash"></i></a>
                                 </td>
                             </tr>
                             <?php $no++; } ?>

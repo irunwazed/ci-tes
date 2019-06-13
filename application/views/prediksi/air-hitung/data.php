@@ -88,6 +88,7 @@
                             <a href="<?=$baseUrl."prediksi/kebutuhan-air"?>" class="btn btn-primary btn-sm scroll-click" ><i class="fa fi-arrow-left"></i> Kembali</a>
 						</div>
 					</div>
+                    <a href="<?=base_url()."prediksi/kebutuhan-air/".@$id."/save"?>" class="btn btn-warning">PDF</a>
                     <div id="tampilHasilRekap"></div>
                     <div class="clearfix">
                         <div class="pull-right">

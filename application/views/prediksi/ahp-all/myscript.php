@@ -16,17 +16,19 @@
 
     }
     var jumKriteria = 1;
-    function addKriteria(){
+    function addKriteria(val = "", hapus = true){
 
 
         let isi = '<div class="kriteria-'+(jumKriteria+1)+' row">'+
                         '<div class="col-10">'+
-                            '<input class="form-control" type="text" placeholder="Masukkan Kriteria" name="kriteria[]">'+
-                        '</div>'+
-                        '<div class="col-2">'+
+                            '<input class="form-control" type="text" placeholder="Masukkan Kriteria" name="kriteria[]" value="'+val+'">'+
+                        '</div>';
+        if(hapus){
+        isi +=          '<div class="col-2">'+
                             '<a href="javascript:void(0);"  onclick="deleteKriteria('+(jumKriteria+1)+')"><i class="fa fa-trash"></i></a>'+
-                        '</div>'+
-                    '</div>';
+                        '</div>';
+        }
+        isi +=          '</div>';
         
         $('#daftar-kriteria').append(isi);
         
@@ -34,9 +36,19 @@
     }
 
     function deleteKriteria(id){
-        alert(id);
         console.log($("#daftar-kriteria"));
         $(".kriteria-"+id).remove(".kriteria-"+id);
     }
+
+    <?php
+        if(@$_GET['tombol'] == "edit"){
+            echo "deleteKriteria(1);";
+            // $dataPilih['kriteria'] = json_decode($dataPilih['kriteria']);
+            foreach($dataPilih['kriteria'] as $row){
+                echo "addKriteria('".$row."', false);";
+            }
+        }
+    
+    ?>
     
 </script>

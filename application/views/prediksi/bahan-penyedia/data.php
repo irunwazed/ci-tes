@@ -121,18 +121,18 @@
 							<p class="mb-30 font-14">Hasil <?=@$name?></p>
 						</div>
                         <div class="pull-right">
-                            <a href="<?=$baseUrl."prediksi/bahan/penyedia"?>" class="btn btn-primary btn-sm scroll-click" ><i class="fi-arrow-left"></i> Kembali</a>
+                            <a href="<?=$baseUrl."bahan/penyedia/".$jenis?>" class="btn btn-primary btn-sm scroll-click" ><i class="fi-arrow-left"></i> Kembali</a>
 						</div>
 					</div>
                     <div class="row">
                         <div id="tampilHasilAll"></div>
                     </div>
+                    <hr>
                     <div class="clearfix">
                         <div class="pull-right">
                         <a href="#" class="btn btn-info btn-sm scroll-click" data-table="penjelasan" onclick="viewTable(this)"><i class="fa fa-plus-circle"></i> Lihat Penjelasan</a>
 						</div>
 					</div>
-
                 </div>
                 
                 <div id="penjelasan" class="set-hide">
@@ -143,9 +143,9 @@
                                 <h4 class="text-blue"><?=@$name?></h4>
                                 <p class="mb-30 font-14">Data <?=@$name?></p>
                             </div>
-                            <div class="pull-right">
+                            <!-- <div class="pull-right">
                                 <a href="<?=$baseUrl."prediksi/bahan/penyedia"?>" class="btn btn-primary btn-sm scroll-click" ><i class="fi-arrow-left"></i> Kembali</a>
-                            </div>
+                            </div> -->
                         </div>
                         <!-- Tampil bahan baku -->
                         <div class="form-group row">
@@ -222,7 +222,7 @@
                                 </tr>
                                 <tr>
                                     <th>KLL</th>
-                                    <td><?=(100*24*12*$produksiKeinginan/$randemen)/$konversi/$produktifitas/$panenPerTahun?> Kg/ha</td>
+                                    <td><?=(100*24*12*$produksiKeinginan/$randemen)/$konversi/$produktifitas/$panenPerTahun?> ha</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -306,14 +306,16 @@
                                 <h4 class="text-blue"><?=@$name?></h4>
                                 <p class="mb-30 font-14">Hasil <?=@$name?></p>
                             </div>
-                            <div class="pull-right">
+                            <!-- <div class="pull-right">
                                 <a href="<?=$baseUrl."prediksi/bahan/penyedia"?>" class="btn btn-primary btn-sm scroll-click" ><i class="fi-arrow-left"></i> Kembali</a>
-                            </div>
+                            </div> -->
                         </div>
                         <!-- <div class="form-group row">
                             <label class="col-sm-12 col-md-12 col-form-label">kebutuhan bahan baru (rumput laut kering)</label>
                         </div> -->
                         <div id="hasilAll">
+                            <a href="<?=base_url()."bahan/penyedia/".$jenis."/".@$id."/save"?>" class="btn btn-warning">PFD</a>
+                            <hr>
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
@@ -323,26 +325,26 @@
                                 <tbody>
                                 <?php if(!@$jenis) $jenis = NULL; if($jenis == 'kll'){ ?>
                                     <tr>
-                                        <th>Kebutuhan bahan baku (kg)</th>
-                                        <td><?=number_format(100*24*12*@$produksiKeinginan/@$randemen,4,",",".")?></td>
+                                        <th>Kebutuhan bahan baku (KBB)</th>
+                                        <td><?=number_format(100*24*12*@$produksiKeinginan/@$randemen,4,",",".")?> kg</td>
                                     </tr>
                                     <tr>
                                         <th>Kebutuhan luas lahan (KLL)</th>
-                                        <td><?=number_format((100*24*12*@$produksiKeinginan/@$randemen)/@$konversi/@$produktifitas/@$panenPerTahun,4,",",".")?> Kg/ha</td>
+                                        <td><?=number_format((100*24*12*@$produksiKeinginan/@$randemen)/@$konversi/@$produktifitas/@$panenPerTahun,4,",",".")?> ha</td>
                                     </tr>
                                 <?php } else if($jenis == 'rop'){ ?>
                                     <tr>
                                         <th>Jumlah Pembelian Bahan Baku yang Ekonomis (EOQ)</th>
-                                        <td><?=number_format(@$EOQ,4,",",".")?> Kg/ha</td>
+                                        <td><?=number_format(@$EOQ,4,",",".")?> Kg</td>
                                     </tr>
                                     <tr>
                                         <th>Titik Pemesanan Kembali (ROP)</th>
-                                        <td><?=number_format(@$ROP,4,",",".")?></td>
+                                        <td><?=number_format(@$ROP,4,",",".")?> Kg</td>
                                     </tr>
                                 <?php }else if($jenis == NULL){ ?> 
                                     <tr>
-                                        <th>Kebutuhan bahan baku (kg)</th>
-                                        <td><?=number_format(100*24*12*@$produksiKeinginan/@$randemen,4,",",".")?></td>
+                                        <th>Kebutuhan bahan baku (KBB)</th>
+                                        <td><?=number_format(100*24*12*@$produksiKeinginan/@$randemen,4,",",".")?> kg</td>
                                     </tr>
                                     <tr>
                                         <th>Kebutuhan luas lahan (KLL)</th>
@@ -350,11 +352,11 @@
                                     </tr>
                                     <tr>
                                         <th>Jumlah Pembelian Bahan Baku yang Ekonomis (EOQ)</th>
-                                        <td><?=number_format(@$EOQ,4,",",".")?> Kg/ha</td>
+                                        <td><?=number_format(@$EOQ,4,",",".")?> Kg</td>
                                     </tr>
                                     <tr>
                                         <th>Titik Pemesanan Kembali (ROP)</th>
-                                        <td><?=number_format(@$ROP,4,",",".")?></td>
+                                        <td><?=number_format(@$ROP,4,",",".")?> Kg</td>
                                     </tr>
                                 <?php } ?>
                                 </tbody>
